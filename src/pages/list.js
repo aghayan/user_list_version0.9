@@ -24,7 +24,7 @@ export function UserList({list, onDelete}) {
                             <td>{elem.lastName}</td>
                             <td>{elem.Email}</td>
                             <td style={{display:'flex', gap: 5 }}>
-                                <button className='blueButton'>Update</button>
+                                <button className='blueButton'>Edit</button>
                                 <button className='redButton' onClick={() => onDelete(elem.id)}>Delete</button>
                                 <button className='blueButton'>View</button>
                             </td>

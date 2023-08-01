@@ -8,7 +8,7 @@ import { ClimbingBoxLoader } from 'react-spinners';
 function App() {
  
   const [list, setList] = useState([
-    {firstName: 'Arman', lastName: 'Aghayan', Email: 'aghayan10@gmail.com', id: 1},
+    {firstName: 'Arman', lastName: 'Aghayan', Email: 'aghayanarman10@gmail.com', id: 1},
 
   ])
 
@@ -16,11 +16,13 @@ function App() {
     setList(list.filter(item => item.id !== id));
   };
 
+  
+
   const [isLoading, setIsLoading] = useState(true);                                                     
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-    }, 5000);
+    }, 2000);
   }, []);
 
   if (isLoading) {
