@@ -7,7 +7,7 @@
 }
 
 .inputList {
-    display: flex;
+    // display: flex;
     gap: 10px;
     margin-bottom: 10px;
 }
@@ -53,4 +53,11 @@
 }
 .loading h2{
     color:#DC3545;
+}
+.errors{
+    display: flex;
+    gap: 20px;
+}
+.errors p{
+    color: red;
 }

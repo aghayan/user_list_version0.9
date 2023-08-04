@@ -1,142 +1,90 @@
-// import '../style/style.scss';
-// import { useState } from 'react';
-// import {useRef} from "react";
-
-
-// export function InputList({ AddData }) {
-//   const [firstName, setFirstName] = useState("");
-//   const [lastName, setLastName] = useState("");
-//   const [email, setEmail] = useState("");
-
-//   function handleAddData() {
-//     if (firstName.trim() !== "" && lastName.trim() !== "" && email.trim() !== "") {
-//       AddData(firstName, lastName, email);
-//       setFirstName("");
-//       setLastName("");
-//       setEmail("");
-//     }
-//   }
-
-//   const firstNameRef = useRef();
-//   const lastNameRef = useRef();
-//   const emailRef = useRef();
-
-//   return (
-//     <div className='inputList'>
-//       <input
-//         type='text'
-//         placeholder='First Name'
-//         ref={firstNameRef}
-//         name='name'
-//         value={firstName}
-//         onChange={(e) => {
-//           setFirstName(e.target.value);
-//         }}
-//       />
-
-//       <input
-//         type='text'
-//         placeholder='Last Name'
-//         ref={lastNameRef}
-//         name="lastName"
-//         value={lastName}
-//         onChange={(e) => {
-//           setLastName(e.target.value);
-//         }}
-//       />
-
-//       <input
-//         type='text'
-//         placeholder='Email'
-//         ref={emailRef}
-//         name="email"
-//         value={email}
-//         onChange={(e) => {
-//           setEmail(e.target.value);
-//         }}
-//       />
-// <button style={{ width: 60 }} className='blueButton' onClick={() => { handleAddData(); firstNameRef.current.focus(); lastNameRef.current.focus(); emailRef.current.focus() }}>Add</button>
-//     </div>
-//   );
-// }
-
-
-
-
 import '../style/style.scss';
 import { useState } from 'react';
-import { useRef } from 'react';
+import { useForm } from 'react-hook-form';
 
 export function InputList({ AddData }) {
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
+  const [age, setAge] = useState('');
 
-  function handleAddData() {
-    if (firstName.trim() !== '' && lastName.trim() !== '' && email.trim() !== '') {
-      AddData(firstName, lastName, email);
-      setFirstName('');
-      setLastName('');
-      setEmail('');
-    } else {
-      // Check which input is empty and set focus to the first empty input
-      if (firstName.trim() === '') {
-        firstNameRef.current.focus();
-      } else if (lastName.trim() === '') {
-        lastNameRef.current.focus();
-      } else if (email.trim() === '') {
-        emailRef.current.focus();
-      }
+  const handleAddData = (data) => {
+    if (data.firstName.trim() !== '' && data.lastName.trim() !== '' && data.email.trim() !== '' && data.age.trim() !== '') {
+      AddData(data.firstName, data.lastName, data.email, data.age);
+      reset();
     }
-  }
+  };
 
-  const firstNameRef = useRef();
-  const lastNameRef = useRef();
-  const emailRef = useRef();
+  const onSubmit = (data) => {
+    handleAddData(data);
+  };
+
+  const handleReset = () => {
+    setFirstName('');
+    setLastName('');
+    setEmail('');
+    setAge('');
+  };
 
   return (
     <div className='inputList'>
-      <input
-        type='text'
-        placeholder='First Name'
-        ref={firstNameRef}
-        name='name'
-        value={firstName}
-        onChange={(e) => {
-          setFirstName(e.target.value);
-        }}
-      />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <input
+          {...register("firstName", { required: true })}
+          type='text'
+          placeholder='First Name'
+          value={firstName}
+          onChange={(e) => {
+            setFirstName(e.target.value);
+          }}
+        />
 
-      <input
-        type='text'
-        placeholder='Last Name'
-        ref={lastNameRef}
-        name='lastName'
-        value={lastName}
-        onChange={(e) => {
-          setLastName(e.target.value);
-        }}
-      />
+        <input
+          {...register("lastName", { required: true, pattern: /^[A-Za-z]+$/i })}
+          type='text'
+          placeholder='Last Name'
+          value={lastName}
+          onChange={(e) => {
+            setLastName(e.target.value);
+          }}
+        />
 
-      <input
-        type='text'
-        placeholder='Email'
-        ref={emailRef}
-        name='email'
-        value={email}
-        onChange={(e) => {
-          setEmail(e.target.value);
-        }}
-      />
-      <button
-        style={{ width: 60 }}
-        className='blueButton'
-        onClick={() => {
-          handleAddData();
-        }}
-      >
-        Add
-      </button>
+        <input
+          {...register("email", { required: true })}
+          type='email'
+          placeholder='Email'
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
+        />
+
+        <input
+          {...register("age", { required: true })}
+          type='number'
+          placeholder='Your Age'
+          value={age}
+          onChange={(e) => {
+            setAge(e.target.value);
+          }}
+        />
+
+        <button style={{ width: 60 }} className='blueButton' type="submit">
+          Add
+        </button>
+
+        <button style={{ width: 60 }} className='redButton' type="button" onClick={handleReset}>
+          Reset
+        </button>
+      </form>
+      <div className='errors'>
+        {errors.firstName && <p>First Name is required.</p>}
+        {errors.lastName && <p>Last Name is required and should contain only letters.</p>}
+        {errors.email && <p>Email is required.</p>}
+        {errors.age && <p>Age is required.</p>}
+      </div>
     </div>
   );
 }

@@ -37,17 +37,19 @@ function App() {
 
   return (
     <div className="App">
-              <InputList  AddData={(firstName, lastName, Email) => {
-          setList([
-            ...list,
-            {
-              firstName: firstName,
-              lastName: lastName,
-              Email: Email,
-              id: list?.length + 1
-            }
-          ])
-        }} />
+    <InputList AddData={(firstName, lastName, email, age) => {
+  setList([
+    ...list,
+    {
+      firstName: firstName,
+      lastName: lastName,
+      Email: email,
+      Age: age,
+      id: list?.length + 1
+    }
+  ])
+}} />
+
       <UserList list={list} onDelete={handleDelete}/>
     </div>
   );
